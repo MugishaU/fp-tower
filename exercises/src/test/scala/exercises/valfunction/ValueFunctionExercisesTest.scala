@@ -44,10 +44,20 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
   //Idempotency means calling a function multiple times is the same as calling it once
   test("secret idempotency") {
     forAll { (text: String) =>
-      val once = secret(text)
+      val once  = secret(text)
       val twice = secret(secret(text))
       assert(once == twice)
     }
+  }
+
+  test("isValidUsernameCharacter find valid characters") {
+    forAll((character: Char) =>
+      if (character.isLetterOrDigit || character == '-' || character =='_'){
+        assert(isValidUsernameCharacter(character))
+      }else{
+        assert(!isValidUsernameCharacter(character))
+      }
+    )
   }
 
   ///////////////////////
