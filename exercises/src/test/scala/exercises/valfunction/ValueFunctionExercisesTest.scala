@@ -23,9 +23,21 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
     }
   }
 
-  test("selectDigits outputs only digits"){
-    forAll {
-      (text: String) => selectDigits(text).foreach(char => assert(char.isDigit))
+  test("selectDigits outputs only digits") {
+    forAll { (text: String) =>
+      selectDigits(text).foreach(char => assert(char.isDigit))
+    }
+  }
+
+  test("secret length is equal") {
+    forAll { (text: String) =>
+      assert(secret(text).length == text.length)
+    }
+  }
+
+  test("secret returns only asterisks") {
+    forAll { (text: String) =>
+      secret(text).foreach(char => assert(char == '*'))
     }
   }
 
