@@ -11,16 +11,53 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
   /////////////////////////////////////////////////////
 
   // replace `ignore` by `test` to enable the test
-  ignore("selectDigits examples") {
+  test("selectDigits examples") {
     assert(selectDigits("hello4world-80") == "480")
     assert(selectDigits("welcome") == "")
   }
 
   // replace `ignore` by `test` to enable the test
-  ignore("selectDigits length is smaller") {
+  test("selectDigits length is smaller") {
     forAll { (text: String) =>
       assert(selectDigits(text).length <= text.length)
     }
+  }
+
+  test("selectDigits outputs only digits") {
+    forAll { (text: String) =>
+      selectDigits(text).foreach(char => assert(char.isDigit))
+    }
+  }
+
+  test("secret length is equal") {
+    forAll { (text: String) =>
+      assert(secret(text).length == text.length)
+    }
+  }
+
+  test("secret returns only asterisks") {
+    forAll { (text: String) =>
+      secret(text).foreach(char => assert(char == '*'))
+    }
+  }
+
+  //Idempotency means calling a function multiple times is the same as calling it once
+  test("secret idempotency") {
+    forAll { (text: String) =>
+      val once  = secret(text)
+      val twice = secret(secret(text))
+      assert(once == twice)
+    }
+  }
+
+  test("isValidUsernameCharacter find valid characters") {
+    forAll((character: Char) =>
+      if (character.isLetterOrDigit || character == '-' || character =='_'){
+        assert(isValidUsernameCharacter(character))
+      }else{
+        assert(!isValidUsernameCharacter(character))
+      }
+    )
   }
 
   ///////////////////////
