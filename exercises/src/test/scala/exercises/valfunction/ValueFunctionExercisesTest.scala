@@ -11,15 +11,21 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
   /////////////////////////////////////////////////////
 
   // replace `ignore` by `test` to enable the test
-  ignore("selectDigits examples") {
+  test("selectDigits examples") {
     assert(selectDigits("hello4world-80") == "480")
     assert(selectDigits("welcome") == "")
   }
 
   // replace `ignore` by `test` to enable the test
-  ignore("selectDigits length is smaller") {
+  test("selectDigits length is smaller") {
     forAll { (text: String) =>
       assert(selectDigits(text).length <= text.length)
+    }
+  }
+
+  test("selectDigits outputs only digits"){
+    forAll {
+      (text: String) => selectDigits(text).foreach(char => assert(char.isDigit))
     }
   }
 
