@@ -29,7 +29,7 @@ object ValueFunctionExercises {
   // but          isValidUsernameCharacter('^') == false
   // Note: You might find some useful helper methods on `char`.
   def isValidUsernameCharacter(char: Char): Boolean =
-    ???
+    char.isLetterOrDigit || char == '-' || char == '_'
 
   // 1d. Implement `isValidUsername` which checks that all the characters in a String are valid
   // such as isValidUsername("john-doe") == true
