@@ -50,7 +50,8 @@ class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProp
       val p1 = Predicate(eval1)
 
       def False[A]: Predicate[A] = Predicate(_ => false)
-      def True[A]: Predicate[A]  = Predicate(_ => true)
+
+      def True[A]: Predicate[A] = Predicate(_ => true)
 
       assert((p1 || False)(value) == p1(value))
       assert((p1 || True)(value) == true)
@@ -60,6 +61,13 @@ class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProp
   test("Predicate flip") {
     assert(isEven.flip(5) == true)
     assert(isEven.flip(6) == false)
+  }
+
+  test("Predicate isValidUser") {
+    assert(isValidUser(User("John", 20)) == true)
+    assert(isValidUser(User("John", 17)) == false)
+    assert(isValidUser(User("john", 20)) == false)
+    assert(isValidUser(User("x", 23)) == false)
   }
 
   ////////////////////////////

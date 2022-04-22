@@ -105,9 +105,11 @@ object GenericFunctionExercises {
   }
 
   object Product {
-    def True[A]: Predicate[A]  = Predicate(_ => true)
+    def True[A]: Predicate[A] = Predicate(_ => true)
+
     def False[A]: Predicate[A] = Predicate(_ => false)
   }
+
   // 2d. Implement `isValidUser`, a predicate which checks if a `User` is:
   // * an adult (older than 18 year) and
   // * their name is longer than or equal to 3 characters and
@@ -120,8 +122,13 @@ object GenericFunctionExercises {
   // You may want to create new Predicate methods to improve the implementation of `isValidUser`.
   case class User(name: String, age: Int)
 
-  lazy val isValidUser: Predicate[User] =
-    ???
+  lazy val isValidUser: Predicate[User] = {
+    val isAdult: Predicate[User]           = Predicate(user => user.age >= 18)
+    val isNameLong: Predicate[User]        = Predicate(user => user.name.length >= 3)
+    val isNameCapitalized: Predicate[User] = Predicate(user => user.name.toCharArray.head.isUpper)
+
+    isAdult && isNameLong && isNameCapitalized
+  }
 
   ////////////////////////////
   // Exercise 3: JsonDecoder
