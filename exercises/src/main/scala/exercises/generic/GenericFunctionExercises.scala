@@ -52,7 +52,9 @@ object GenericFunctionExercises {
   val productPrices: Pair[Double] = Pair(2.5, 329.99)
 
   lazy val products: Pair[Product] =
-    productNames.zipWith(productPrices)((name, price) => Product(name,price))
+    productNames.zipWith(productPrices)((name, price) => Product(name, price))
+
+  lazy val productsConcise: Pair[Product] = productNames.zipWith(productPrices)(Product(_, _))
 
   //////////////////////////////////////////////
   // Bonus question (not covered by the video)
@@ -86,7 +88,7 @@ object GenericFunctionExercises {
     //         (isEven && isPositive)(-4) == false
     //         (isEven && isPositive)(-7) == false
     def &&(other: Predicate[A]): Predicate[A] =
-      ???
+      Predicate(value => eval(value) && other.eval(value))
 
     // 2b. Implement `||` that combines two predicates using logical or
     // such as (isEven || isPositive)(12) == true
@@ -94,14 +96,18 @@ object GenericFunctionExercises {
     //         (isEven || isPositive)(-4) == true
     // but     (isEven || isPositive)(-7) == false
     def ||(other: Predicate[A]): Predicate[A] =
-      ???
+      Predicate(value => eval(value) || other.eval(value))
 
     // 2c. Implement `flip` that reverses a predicate
     // such as isEven.flip(11) == true
     def flip: Predicate[A] =
-      ???
+      Predicate(value => !eval(value))
   }
 
+  object Product {
+    def True[A]: Predicate[A]  = Predicate(_ => true)
+    def False[A]: Predicate[A] = Predicate(_ => false)
+  }
   // 2d. Implement `isValidUser`, a predicate which checks if a `User` is:
   // * an adult (older than 18 year) and
   // * their name is longer than or equal to 3 characters and

@@ -17,17 +17,17 @@ class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProp
   ////////////////////
 
   test("Pair swap") {
-    assert(Pair("a","b").swap == Pair("b","a"))
+    assert(Pair("a", "b").swap == Pair("b", "a"))
   }
 
   test("Pair map") {
-    assert(Pair("John", "Doe").map(_.length) == Pair(4,3))
+    assert(Pair("John", "Doe").map(_.length) == Pair(4, 3))
   }
 
   test("Pair decoded") {}
 
   test("Pair zipWith") {
-   assert(Pair(0, 2).zipWith(Pair(3, 4))((x, y) => x + y) == Pair(3, 6))
+    assert(Pair(0, 2).zipWith(Pair(3, 4))((x, y) => x + y) == Pair(3, 6))
   }
 
   test("Pair productNames") {
@@ -38,11 +38,29 @@ class GenericFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProp
   // Exercise 2: Predicate
   ////////////////////////////
 
-  test("Predicate &&") {}
+  test("Predicate &&") {
+    assert((isEven && isPositive)(12))
+    assert(!(isEven && isPositive)(11))
+    assert(!(isEven && isPositive)(-2))
+    assert(!(isEven && isPositive)(-1))
+  }
 
-  test("Predicate ||") {}
+  test("Predicate ||") {
+    forAll { (eval1: Int => Boolean, eval2: Int => Boolean, value: Int) =>
+      val p1 = Predicate(eval1)
 
-  test("Predicate flip") {}
+      def False[A]: Predicate[A] = Predicate(_ => false)
+      def True[A]: Predicate[A]  = Predicate(_ => true)
+
+      assert((p1 || False)(value) == p1(value))
+      assert((p1 || True)(value) == true)
+    }
+  }
+
+  test("Predicate flip") {
+    assert(isEven.flip(5) == true)
+    assert(isEven.flip(6) == false)
+  }
 
   ////////////////////////////
   // Exercise 3: JsonDecoder
